@@ -1,0 +1,37 @@
+<html> 
+<head> 
+	<script src="jquery-1.8.2.min.js"></script>
+	<script type="text/javascript">
+		var htmlmenu="";
+		jQuery.ajax({
+						headers: { 
+							'Accept': 'application/json',
+							'Content-Type': 'application/json' 
+						},
+						type: "POST",
+						async: false,
+						'url': '/jsonrpc?getAddons',
+						'data': '{"jsonrpc": "2.0", "method": "Addons.GetAddons", "params": { "enabled": true, "type" : "xbmc.gui.webinterface", "properties": ["name", "thumbnail"]}, "id": 1}',
+						'dataType': 'json',
+						'success': function(resultGetAddons){
+									for (var i = 0; i < (resultGetAddons["result"]["limits"]["end"]); i++) {
+											if(resultGetAddons["result"]["addons"][i]["name"] != "yChooser"){
+													htmlmenu += "<a href='http://" + $(location).attr('host') + "/addons/" + resultGetAddons["result"]["addons"][i]["addonid"] + "' target='content'>"
+															+ resultGetAddons["result"]["addons"][i]["name"] + "</a> ";
+											}
+									}
+
+						}
+		});
+		
+window.setTimeout(function(){document.getElementById('menu').innerHTML = htmlmenu;}, 1000);
+
+</script>
+</head>
+<body>
+
+<div id="menu">please wait...</div>
+
+
+</body>
+</html>
